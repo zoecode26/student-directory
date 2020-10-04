@@ -78,32 +78,87 @@ end
 
 def input_more_info
   puts "Please enter the details of the students"
-  puts "To finish, just hit return twice"
   # create an empty array
   students = []
   # get the first name
-  puts "Enter first name:"
-  firstname = gets.chomp
-  # get the surname
-  puts "Enter surname:"
-  surname = gets.chomp
-  # get the age
-  puts "Enter age:"
-  age = gets.chomp
-  # while the name is not empty, repeat this code
-  while !firstname.empty? && !surname.empty? && !age.empty?  do
-    # add the student hash to the array
-    students << {firstname: firstname, surname: surname, age: age, cohort: :november}
-    puts "Now we have #{students.count} students"
-    # gets another first name
+  while true do
     puts "Enter first name:"
     firstname = gets.chomp
-    # gets another surname
-    puts "Enter surname:"
+    if !firstname.empty?
+      break
+    end
+  end
+  # get the surname
+  while true do
+    puts "Enter  surname:"
     surname = gets.chomp
-    # gets another age
+    if !surname.empty?
+      break
+    end
+  end
+  # get the age
+  while true do
     puts "Enter age:"
     age = gets.chomp
+    if !age.empty?
+      break
+    end
+  end
+  # get the cohort
+  puts "Enter cohort:"
+  cohort = gets.chomp
+  if cohort.empty?
+    cohort = :november
+  else
+    cohort = cohort.to_sym
+  end
+
+  puts "Stop?"
+  stop = gets.chomp
+  # while the name is not empty, repeat this code
+  while stop == "no" do
+    # add the student hash to the array
+    students << {firstname: firstname, surname: surname, age: age, cohort: cohort}
+    puts "Now we have #{students.count} students"
+    # gets another first name
+    while true do
+      puts "Enter first name:"
+      firstname = gets.chomp
+      if !firstname.empty?
+        break
+      end
+    end
+    # gets another surname
+    while true do
+      puts "Enter  surname:"
+      surname = gets.chomp
+      if !surname.empty?
+        break
+      end
+    end
+    # gets another age
+    while true do
+      puts "Enter age:"
+      age = gets.chomp
+      if !age.empty?
+        break
+      end
+    end
+    # gets another cohort
+    puts "Enter cohort:"
+    cohort = gets.chomp
+    if cohort.empty?
+      cohort = :november
+    else
+      cohort = cohort.to_sym
+    end
+
+    puts "Stop?"
+    stop = gets.chomp
+    if stop == "yes"
+      students << {firstname: firstname, surname: surname, age: age, cohort: cohort}
+    end
+
   end
   # return the array of students
   students
@@ -126,9 +181,11 @@ def print_centered(students)
 end
 
 # nothing happens until we call the methods
-students = input_students
+# students = input_students
+students = input_more_info
 print_header
-print(students)
+print_more_info(students)
+# print(students)
 print_footer(students)
 # print_numbered(students)
 # print_certain_letter(students, "m")
