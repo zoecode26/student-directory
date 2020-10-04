@@ -212,13 +212,13 @@ def sort_by_cohort(students)
 end
 
 # nothing happens until we call the methods
-students = input_students
+# students = input_students
 # students = input_more_info
-if students.count > 0
-  print_header
-  print(students)
-  print_footer(students)
-end
+# if students.count > 0
+#   print_header
+#   print(students)
+#   print_footer(students)
+# end
 # print_more_info(students)
 # sort_by_cohort(students)
 # print_numbered(students)
@@ -228,3 +228,30 @@ end
 # students = input_more_info
 # print_more_info(students)
 # print_centered(students)
+
+def interactive_menu
+  students = []
+
+  while true do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+
+    selection = gets.chomp
+
+    case selection
+      when "1"
+        students = input_students
+      when "2"
+        print_header
+        print(students)
+        print_footer(students)
+      when "9"
+        exit
+      else
+        puts "I don't know what you meant, try again"
+    end
+  end
+end
+
+interactive_menu
