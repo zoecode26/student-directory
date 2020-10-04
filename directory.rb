@@ -51,8 +51,18 @@ def print_numbered(students)
   end
 end
 
+def print_certain_letter(students, letter)
+  students.each do |student|
+    if (student[:name])[0].upcase == letter.upcase
+      puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  end
+end
+
 # nothing happens until we call the methods
 students = input_students
 print_header
 print(students)
+#print_numbered(students)
+#print_certain_letter(students, "m")
 print_footer(students)
