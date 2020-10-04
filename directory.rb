@@ -67,11 +67,21 @@ def print_less_than_twelve(students)
   end
 end
 
+def print_with_until(students)
+  count = 0
+  until count == students.count
+    student = students[count]
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    count += 1
+  end
+end
+
 # nothing happens until we call the methods
 students = input_students
 print_header
 print(students)
-#print_numbered(students)
-#print_certain_letter(students, "m")
+# print_numbered(students)
+# print_certain_letter(students, "m")
 # print_less_than_twelve(students)
+# print_with_until(students)
 print_footer(students)
