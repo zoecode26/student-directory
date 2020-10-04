@@ -1,16 +1,16 @@
 # let's put all students into an array
 students = [
   {name: "Dr. Hannibal Lecter", cohort: :november},
-  {name: "Darth Vader", cohort: :november},
-  {name: "Nurse Ratched", cohort: :november},
+  {name: "Darth Vader", cohort: :july},
+  {name: "Nurse Ratched", cohort: :march},
   {name: "Michael Corleone", cohort: :november},
   {name: "Alex DeLarge", cohort: :november},
-  {name: "The Wicked Witch of the West", cohort: :november},
+  {name: "The Wicked Witch of the West", cohort: :july},
   {name: "Terminator", cohort: :november},
-  {name: "Freddy Krueger", cohort: :november},
+  {name: "Freddy Krueger", cohort: :july},
   {name: "The Joker", cohort: :november},
   {name: "Joffrey Baratheon", cohort: :november},
-  {name: "Norman Bates", cohort: :november}
+  {name: "Norman Bates", cohort: :march}
 ]
 def print_header
   puts "The students of Villains Academy"
@@ -180,12 +180,31 @@ def print_centered(students)
   end
 end
 
+def sort_by_cohort(students)
+  sorted_by_cohort = {}
+
+  students.map { |student|
+    cohortname = student[:cohort]
+    if sorted_by_cohort[cohortname] == nil
+      sorted_by_cohort[cohortname] = [student[:name]]
+    else
+      sorted_by_cohort[cohortname].push(student[:name])
+    end
+  }
+
+  sorted_by_cohort.each do |cohort, name|
+    puts "#{cohort}:"
+    puts name
+  end
+end
+
 # nothing happens until we call the methods
-# students = input_students
-students = input_more_info
+students = input_students
+# students = input_more_info
 print_header
-print_more_info(students)
-# print(students)
+# print_more_info(students)
+print(students)
+# sort_by_cohort(students)
 print_footer(students)
 # print_numbered(students)
 # print_certain_letter(students, "m")
