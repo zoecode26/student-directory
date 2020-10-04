@@ -59,10 +59,19 @@ def print_certain_letter(students, letter)
   end
 end
 
+def print_less_than_twelve(students)
+  students.each do |student|
+    if student[:name].length < 12
+      puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  end
+end
+
 # nothing happens until we call the methods
 students = input_students
 print_header
 print(students)
 #print_numbered(students)
 #print_certain_letter(students, "m")
+# print_less_than_twelve(students)
 print_footer(students)
