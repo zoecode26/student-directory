@@ -214,11 +214,13 @@ end
 # nothing happens until we call the methods
 students = input_students
 # students = input_more_info
-print_header
+if students.count > 0
+  print_header
+  print(students)
+  print_footer(students)
+end
 # print_more_info(students)
-print(students)
 # sort_by_cohort(students)
-print_footer(students)
 # print_numbered(students)
 # print_certain_letter(students, "m")
 # print_less_than_twelve(students)
