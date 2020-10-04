@@ -43,6 +43,14 @@ def input_students
   # return the array of students
   students
 end
+
+# EXTRA EXERCISES
+def print_numbered(students)
+  students.each.with_index(1) do |student, index|
+    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+  end
+end
+
 # nothing happens until we call the methods
 students = input_students
 print_header
