@@ -32,7 +32,7 @@ def input_students
   # create an empty array
   students = []
   # get the first name
-  name = gets.delete("\n")
+  name = STDIN.gets.delete("\n")
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student hash to the array
@@ -43,7 +43,7 @@ def input_students
       puts "Now we have #{$students.count} students"
     end
     # get another name from the user
-    name = gets.delete("\n")
+    name = STDIN.gets.delete("\n")
   end
 end
 
@@ -86,7 +86,7 @@ end
 #   # get the first name
 #   while true do
 #     puts "Enter first name:"
-#     firstname = gets.chomp
+#     firstname = STDIN.gets.chomp
 #     if !firstname.empty?
 #       break
 #     end
@@ -94,7 +94,7 @@ end
 #   # get the surname
 #   while true do
 #     puts "Enter  surname:"
-#     surname = gets.chomp
+#     surname = STDIN.gets.chomp
 #     if !surname.empty?
 #       break
 #     end
@@ -102,14 +102,14 @@ end
 #   # get the age
 #   while true do
 #     puts "Enter age:"
-#     age = gets.chomp
+#     age = STDIN.gets.chomp
 #     if !age.empty?
 #       break
 #     end
 #   end
 #   # get the cohort
 #   puts "Enter cohort:"
-#   cohort = gets.chomp
+#   cohort = STDIN.gets.chomp
 #   if cohort.empty?
 #     cohort = :november
 #   else
@@ -117,7 +117,7 @@ end
 #   end
 #
 #   puts "Stop?"
-#   stop = gets.chomp
+#   stop = STDIN.gets.chomp
 #   # while the name is not empty, repeat this code
 #   while stop == "no" do
 #     # add the student hash to the array
@@ -127,33 +127,33 @@ end
 #     else
 #       puts "Now we have #{students.count} students"
 #     end
-#     # gets another first name
+#     # STDIN.gets another first name
 #     while true do
 #       puts "Enter first name:"
-#       firstname = gets.chomp
+#       firstname = STDIN.gets.chomp
 #       if !firstname.empty?
 #         break
 #       end
 #     end
-#     # gets another surname
+#     # STDIN.gets another surname
 #     while true do
 #       puts "Enter  surname:"
-#       surname = gets.chomp
+#       surname = STDIN.gets.chomp
 #       if !surname.empty?
 #         break
 #       end
 #     end
-#     # gets another age
+#     # STDIN.gets another age
 #     while true do
 #       puts "Enter age:"
-#       age = gets.chomp
+#       age = STDIN.gets.chomp
 #       if !age.empty?
 #         break
 #       end
 #     end
-#     # gets another cohort
+#     # STDIN.gets another cohort
 #     puts "Enter cohort:"
-#     cohort = gets.chomp
+#     cohort = STDIN.gets.chomp
 #     if cohort.empty?
 #       cohort = :november
 #     else
@@ -161,7 +161,7 @@ end
 #     end
 #
 #     puts "Stop?"
-#     stop = gets.chomp
+#     stop = STDIN.gets.chomp
 #     if stop == "yes"
 #       students << {firstname: firstname, surname: surname, age: age, cohort: cohort}
 #       if students.count == 1
@@ -238,20 +238,31 @@ def save_students
     file.puts csv_line
   end
   file.close
-
 end
 
-def load_students
-  # open the file for reading
-  file = File.open("students.csv", "r")
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+     puts "Loaded #{$students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
+end
 
-  # call teh readlines function to iterate over each line of the file
+def load_students(filename = "students.csv")
+  # open the file for reading
+  file = File.open(filename, "r")
+
+  # call the readlines function to iterate over each line of the file
   file.readlines.each do |line|
     # parallel assignment
     name, cohort = line.chomp.split(',')
-      # put data into hash
-      $students << {name: name, cohort: cohort.to_sym}
-    end
+    # put data into hash
+    $students << {name: name, cohort: cohort.to_sym}
+  end
   file.close
 end
 
@@ -290,8 +301,9 @@ def interactive_menu
   students = []
   while true do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
+try_load_students
 interactive_menu
