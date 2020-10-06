@@ -12,6 +12,7 @@
 #   {name: "Joffrey Baratheon", cohort: :november},
 #   {name: "Norman Bates", cohort: :march}
 # ]
+require 'csv'
 
 $students = []
 
@@ -57,15 +58,23 @@ def input_students
 end
 
 def universal_loading(filename)
-  # reading file with block like this means we don't have to remember to close file manually
-  File.open(filename, "r") do |f|
-    # call the each_line function to split file into a string for each line
-    f.each_line do |line|
-      # parallel assignment
-      name, cohort = line.chomp.split(',')
-      # put data into hash
+  # # reading file with block like this means we don't have to remember to close file manually
+  # File.open(filename, "r") do |f|
+  #   # call the each_line function to split file into a string for each line
+  #   f.each_line do |line|
+  #     # parallel assignment
+  #     name, cohort = line.chomp.split(',')
+  #     # put data into hash
+  #     add_to_hash(name, cohort)
+  #   end
+  # end
+
+  CSV.foreach(filename) do |row|
+      # Each row is an array containing the contents of one line of the file
+      # Each item in this array is separated by a \n (hence the use of chomp below)
+      name = row[0].chomp
+      cohort = row[1]
       add_to_hash(name, cohort)
-    end
   end
 end
 
@@ -87,13 +96,19 @@ def save_students
   puts("Enter name of file to write to")
   filename = get_filename
 
-  # open the file for writing in a block so we don't have to manually close it
-  File.open(filename, "w") do |f|
-    #iterate over the array of students
+  # # open the file for writing in a block so we don't have to manually close it
+  # File.open(filename, "w") do |f|
+  #   #iterate over the array of students
+  #   $students.each do |student|
+  #     student_data = [student[:name], student[:cohort]]
+  #     csv_line = student_data.join(",")
+  #     f.puts csv_line
+  #   end
+  # end
+
+  CSV.open(filename, "wb") do |csv|
     $students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      f.puts csv_line
+      csv << [student[:name], student[:cohort]]
     end
   end
 
