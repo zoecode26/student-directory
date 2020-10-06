@@ -57,15 +57,16 @@ def input_students
 end
 
 def universal_loading(filename)
-  file = File.open(filename, "r")
-  # call the readlines function to iterate over each line of the file
-  file.readlines.each do |line|
-    # parallel assignment
-    name, cohort = line.chomp.split(',')
-    # put data into hash
-    add_to_hash(name, cohort)
+  # reading file with block like this means we don't have to remember to close file manually
+  File.open(filename, "r") do |f|
+    # call the each_line function to split file into a string for each line
+    f.each_line do |line|
+      # parallel assignment
+      name, cohort = line.chomp.split(',')
+      # put data into hash
+      add_to_hash(name, cohort)
+    end
   end
-  file.close
 end
 
 def load_students
@@ -85,16 +86,18 @@ end
 def save_students
   puts("Enter name of file to write to")
   filename = get_filename
-  # open the file for writing
-  file = File.open(filename, "w")
 
-  #iterate over the array of students
-  $students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  # open the file for writing in a block so we don't have to manually close it
+  File.open(filename, "w") do |f|
+    #iterate over the array of students
+    $students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      f.puts csv_line
+    end
   end
-  file.close
+
+
   puts()
   puts("STUDENTS SAVED")
   puts()
