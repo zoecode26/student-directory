@@ -79,8 +79,13 @@ def add_to_hash(name, cohort)
 end
 
 def save_students
+  puts("Enter name of file to write to")
+  filename = gets.chomp
+  if filename == ""
+    filename = "students.csv"
+  end
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
 
   #iterate over the array of students
   $students.each do |student|
@@ -114,8 +119,8 @@ def print_menu
   puts()
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to file"
+  puts "4. Load the list from file"
   puts "9. Exit"
   puts()
 end
