@@ -52,6 +52,8 @@ def input_students
     name = STDIN.gets.delete("\n")
   end
   puts()
+  puts("STUDENT/s ADDED")
+  puts()
 end
 
 def load_students(filename = "students.csv")
@@ -67,6 +69,9 @@ def load_students(filename = "students.csv")
     add_to_hash(name, cohort)
   end
   file.close
+  puts()
+  puts("STUDENTS LOADED")
+  puts()
 end
 
 def add_to_hash(name, cohort)
@@ -84,6 +89,9 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts()
+  puts("STUDENTS SAVED")
+  puts()
 end
 
 def try_load_students
@@ -103,7 +111,7 @@ def try_load_students
 end
 
 def print_menu
-  puts ()
+  puts()
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
