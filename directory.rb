@@ -56,11 +56,8 @@ def input_students
   puts()
 end
 
-def load_students(filename = "students.csv")
-  puts()
-  # open the file for reading
+def universal_loading(filename)
   file = File.open(filename, "r")
-
   # call the readlines function to iterate over each line of the file
   file.readlines.each do |line|
     # parallel assignment
@@ -69,6 +66,15 @@ def load_students(filename = "students.csv")
     add_to_hash(name, cohort)
   end
   file.close
+end
+
+def load_students
+  puts("Enter name of file to read from")
+  filename = gets.chomp
+  if filename == ""
+    filename = "students.csv"
+  end
+  universal_loading(filename)
   puts()
   puts("STUDENTS LOADED")
   puts()
@@ -76,6 +82,7 @@ end
 
 def add_to_hash(name, cohort)
     $students << {name: name, cohort: cohort.to_sym}
+    $students = $students.uniq
 end
 
 def save_students
@@ -106,7 +113,7 @@ def try_load_students
     filename = "students.csv"
   end
   if File.exists?(filename) # if it exists
-    load_students(filename)
+     universal_loading(filename)
      puts "Loaded #{$students.count} from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
