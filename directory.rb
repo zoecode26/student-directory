@@ -26,26 +26,6 @@ def print_footer
   puts "Overall, we have #{$students.count} great students"
 end
 
-def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
-  # create an empty array
-  students = []
-  # get the first name
-  name = STDIN.gets.delete("\n")
-  # while the name is not empty, repeat this code
-  while !name.empty? do
-    # add the student hash to the array
-    $students << {name: name, cohort: :november}
-    if $students.count == 1
-      puts "Now we have 1 student"
-    else
-      puts "Now we have #{$students.count} students"
-    end
-    # get another name from the user
-    name = STDIN.gets.delete("\n")
-  end
-end
 
 # EXTRA EXERCISES
 # def print_numbered(students)
@@ -227,6 +207,46 @@ end
 # students = input_more_info
 # print_more_info(students)
 # print_centered(students)
+
+def input_students
+  puts "Please enter the names of the students"
+  puts "To finish, just hit return twice"
+  # create an empty array
+  students = []
+  # get the first name
+  name = STDIN.gets.delete("\n")
+  # while the name is not empty, repeat this code
+  while !name.empty? do
+    # add the student hash to the array
+    add_to_hash(name, :november)
+    if $students.count == 1
+      puts "Now we have 1 student"
+    else
+      puts "Now we have #{$students.count} students"
+    end
+    # get another name from the user
+    name = STDIN.gets.delete("\n")
+  end
+end
+
+def load_students(filename = "students.csv")
+  # open the file for reading
+  file = File.open(filename, "r")
+
+  # call the readlines function to iterate over each line of the file
+  file.readlines.each do |line|
+    # parallel assignment
+    name, cohort = line.chomp.split(',')
+    # put data into hash
+    add_to_hash(name, cohort)
+  end
+  file.close
+end
+
+def add_to_hash(name, cohort)
+    $students << {name: name, cohort: cohort.to_sym}
+end
+
 def save_students
   # open the file for writing
   file = File.open("students.csv", "w")
@@ -250,20 +270,6 @@ def try_load_students
     puts "Sorry, #{filename} doesn't exist."
     exit # quit the program
   end
-end
-
-def load_students(filename = "students.csv")
-  # open the file for reading
-  file = File.open(filename, "r")
-
-  # call the readlines function to iterate over each line of the file
-  file.readlines.each do |line|
-    # parallel assignment
-    name, cohort = line.chomp.split(',')
-    # put data into hash
-    $students << {name: name, cohort: cohort.to_sym}
-  end
-  file.close
 end
 
 def print_menu
