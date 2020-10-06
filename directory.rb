@@ -70,10 +70,7 @@ end
 
 def load_students
   puts("Enter name of file to read from")
-  filename = gets.chomp
-  if filename == ""
-    filename = "students.csv"
-  end
+  filename = get_filename
   universal_loading(filename)
   puts()
   puts("STUDENTS LOADED")
@@ -87,10 +84,7 @@ end
 
 def save_students
   puts("Enter name of file to write to")
-  filename = gets.chomp
-  if filename == ""
-    filename = "students.csv"
-  end
+  filename = get_filename
   # open the file for writing
   file = File.open(filename, "w")
 
@@ -104,6 +98,14 @@ def save_students
   puts()
   puts("STUDENTS SAVED")
   puts()
+end
+
+def get_filename
+  filename = gets.chomp
+  if filename == ""
+    filename = "students.csv"
+  end
+  return filename
 end
 
 def try_load_students
