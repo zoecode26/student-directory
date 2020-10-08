@@ -7,7 +7,6 @@ class StudentList
 
   def add(student)
     @students.push(student.get_student)
-    @students = @students.uniq
   end
 
   def print_header
@@ -25,7 +24,7 @@ class StudentList
 
   def print_footer
     puts()
-    puts "Overall, we have #{@students.count} great students"
+    puts "Overall, we have #{@students.uniq.count} great students"
     puts()
   end
 
@@ -33,6 +32,10 @@ class StudentList
     print_header
     print_students_list
     print_footer
+  end
+
+  def return_list
+    return @students
   end
 end
 
@@ -50,10 +53,44 @@ end
 class StartMenu
   def initialize
     @studentlist = StudentList.new
+    try_load_students
     while true do
       print_menu
       process(STDIN.gets.chomp)
     end
+  end
+
+  def try_load_students
+    puts()
+    filename = ARGV.first # first argument from the command line
+    if filename.nil? # get out of the method if it isn't given
+      filename = "students.csv"
+    end
+    if File.exists?(filename) # if it exists
+       universal_loading(filename)
+       puts "Loaded #{@studentlist.return_list.count} from #{filename}"
+    else # if it doesn't exist
+      puts "Sorry, #{filename} doesn't exist."
+      exit # quit the program
+    end
+    puts()
+  end
+
+  def universal_loading(filename)
+    CSV.foreach(filename) do |row|
+        name = row[0].chomp
+        student = Student.new(name)
+        @studentlist.add(student)
+    end
+  end
+
+  def load_students
+    puts("Enter name of file to read from")
+    filename = get_filename
+    universal_loading(filename)
+    puts()
+    puts("STUDENTS LOADED")
+    puts()
   end
 
   def print_menu
@@ -74,7 +111,7 @@ class StartMenu
       name = STDIN.gets.chomp
       if name == "stop"
         break
-      else
+      elsif !name.empty?
         student = Student.new(name)
         @studentlist.add(student)
       end
@@ -84,12 +121,34 @@ class StartMenu
     puts()
   end
 
+  def save_students
+    puts("Enter name of file to write to")
+    filename = get_filename
+
+    CSV.open(filename, "w") do |csv|
+      @studentlist.return_list.each do |student|
+        csv << [student[:name], student[:cohort]]
+      end
+    end
+    puts()
+    puts("STUDENTS SAVED")
+    puts()
+  end
+
+  def get_filename
+    filename = gets.chomp
+    if filename == ""
+      filename = "students.csv"
+    end
+    return filename
+  end
+
   def process(selection)
     case selection
       when "1"
-        students = input_students
+        input_students
       when "2"
-        show_students
+        @studentlist.show_students
       when "3"
         save_students
       when "4"
@@ -103,12 +162,5 @@ class StartMenu
   end
 end
 
-
-
-
 run = StartMenu.new
 run
-# student = Student.new("Matt")
-# students = StudentList.new
-# students.add(student)
-# students.show_students
