@@ -6,7 +6,8 @@ class StudentList
   end
 
   def add(student)
-    @students.push(student.get_student)
+    record = {name: student.name, cohort: student.cohort}
+    @students.push(record)
   end
 
   def print_header
@@ -36,14 +37,14 @@ class StudentList
 end
 
 class Student
+  attr_accessor :name
+  attr_accessor :cohort
+
   def initialize(name)
     @name = name
     @cohort = :november
   end
 
-  def get_student
-    return {name: @name, cohort: @cohort}
-  end
 end
 
 class StartMenu
