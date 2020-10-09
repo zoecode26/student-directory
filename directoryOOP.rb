@@ -10,10 +10,8 @@ class StudentList
   end
 
   def print_header
-    puts ()
-    puts "The students of Villains Academy"
-    puts "-------------"
-    puts ()
+    puts "", "The students of Villains Academy"
+    puts "-------------", ""
   end
 
   def print_students_list
@@ -23,9 +21,7 @@ class StudentList
   end
 
   def print_footer
-    puts()
-    puts "Overall, we have #{@students.uniq.count} great students"
-    puts()
+    puts "", "Overall, we have #{@students.uniq.count} great students", ""
   end
 
   def show_students
@@ -53,15 +49,10 @@ end
 class StartMenu
   def initialize
     @studentlist = StudentList.new
-    try_load_students
-    while true do
-      print_menu
-      process(STDIN.gets.chomp)
-    end
   end
 
   def try_load_students
-    puts()
+    puts
     filename = ARGV.first # first argument from the command line
     if filename.nil? # get out of the method if it isn't given
       filename = "students.csv"
@@ -69,11 +60,15 @@ class StartMenu
     if File.exists?(filename) # if it exists
        universal_loading(filename)
        puts "Loaded #{@studentlist.return_list.count} from #{filename}"
+       while true do
+         print_menu
+         process(STDIN.gets.chomp)
+       end
     else # if it doesn't exist
       puts "Sorry, #{filename} doesn't exist."
       exit # quit the program
     end
-    puts()
+    puts
   end
 
   def universal_loading(filename)
@@ -88,25 +83,20 @@ class StartMenu
     puts("Enter name of file to read from")
     filename = get_filename
     universal_loading(filename)
-    puts()
-    puts("STUDENTS LOADED")
-    puts()
+    puts "", "STUDENTS LOADED",""
   end
 
   def print_menu
-    puts()
-    puts "1. Input the students"
+    puts "", "1. Input the students"
     puts "2. Show the students"
     puts "3. Save the list to file"
     puts "4. Load the list from file"
-    puts "9. Exit"
-    puts()
+    puts "9. Exit",""
   end
 
   def input_students
     while true do
-      puts()
-      puts "Please enter the names of the students"
+      puts "", "Please enter the names of the students"
       puts "To finish, type stop"
       name = STDIN.gets.chomp
       if name == "stop"
@@ -116,9 +106,8 @@ class StartMenu
         @studentlist.add(student)
       end
     end
-    puts()
-    puts("STUDENT/s ADDED")
-    puts()
+    puts "", "STUDENT/s ADDED",""
+
   end
 
   def save_students
@@ -130,9 +119,7 @@ class StartMenu
         csv << [student[:name], student[:cohort]]
       end
     end
-    puts()
-    puts("STUDENTS SAVED")
-    puts()
+    puts "", "STUDENTS SAVED",""
   end
 
   def get_filename
@@ -156,11 +143,10 @@ class StartMenu
       when "9"
         exit
       else
-        puts "I don't know what you meant, try again"
-        puts()
+        puts "I don't know what you meant, try again",""
     end
   end
 end
 
 run = StartMenu.new
-run
+run.try_load_students
