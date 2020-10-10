@@ -31,6 +31,15 @@ class StudentList
     print_footer
   end
 
+  def save_students(filename)
+    CSV.open(filename, "w") do |csv|
+      @students.each do |student|
+        csv << [student[:name], student[:cohort]]
+      end
+    end
+    puts "", "STUDENTS SAVED",""
+  end
+
   def return_list
     return @students
   end
@@ -111,18 +120,6 @@ class StartMenu
 
   end
 
-  def save_students
-    puts("Enter name of file to write to")
-    filename = get_filename
-
-    CSV.open(filename, "w") do |csv|
-      @studentlist.return_list.each do |student|
-        csv << [student[:name], student[:cohort]]
-      end
-    end
-    puts "", "STUDENTS SAVED",""
-  end
-
   def get_filename
     filename = gets.chomp
     if filename == ""
@@ -138,7 +135,9 @@ class StartMenu
       when "2"
         @studentlist.show_students
       when "3"
-        save_students
+        puts("Enter name of file to write to")
+        filename = get_filename
+        @studentlist.save_students(filename)
       when "4"
         load_students
       when "9"
