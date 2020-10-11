@@ -21,6 +21,19 @@ class StudentList
     end
   end
 
+  def universal_loading(filename)
+    CSV.foreach(filename) do |row|
+        name = row[0].chomp
+        student = Student.new(name)
+        self.add(student)
+    end
+  end
+
+  def load_students(filename)
+    universal_loading(filename)
+    puts "", "STUDENTS LOADED",""
+  end
+
   def print_footer
     puts "", "Overall, we have #{@students.uniq.count} great students", ""
   end
@@ -68,7 +81,7 @@ class StartMenu
       filename = "students.csv"
     end
     if File.exists?(filename) # if it exists
-       universal_loading(filename)
+       @studentlist.universal_loading(filename)
        puts "Loaded #{@studentlist.return_list.count} from #{filename}"
        while true do
          print_menu
@@ -79,21 +92,6 @@ class StartMenu
       exit # quit the program
     end
     puts
-  end
-
-  def universal_loading(filename)
-    CSV.foreach(filename) do |row|
-        name = row[0].chomp
-        student = Student.new(name)
-        @studentlist.add(student)
-    end
-  end
-
-  def load_students
-    puts("Enter name of file to read from")
-    filename = get_filename
-    universal_loading(filename)
-    puts "", "STUDENTS LOADED",""
   end
 
   def print_menu
@@ -139,7 +137,9 @@ class StartMenu
         filename = get_filename
         @studentlist.save_students(filename)
       when "4"
-        load_students
+        puts("Enter name of file to read from")
+        filename = get_filename
+        @studentlist.load_students(filename)
       when "9"
         exit
       else
